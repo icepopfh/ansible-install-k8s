@@ -50,6 +50,7 @@
 
 4.增加node节点
 -------------
-未完成
+4-1：安装部署新的k8s-node
+4-2：配置新node的flannel网络（在新节点的flannel进入running状态后再执行）
 
 
