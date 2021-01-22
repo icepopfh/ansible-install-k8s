@@ -1,0 +1,30 @@
+- name: Create a directory
+  file: dest={{install_dir}}/kube-proxy/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/kube-proxy/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/kube-proxy*.tar.gz
+
+- name: Copy the certificate
+  copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kube-proxy/conf
+  with_items:
+  - apiserver-ca.pem
+  - kube-proxy.pem
+  - kube-proxy-key.pem
+
+- name: Generate configuration files
+  template: src=kube-proxy.conf.j2 dest={{install_dir}}/kube-proxy/conf/kube-proxy.conf
+- template: src=kube-proxy.service.j2 dest=/usr/lib/systemd/system/kube-proxy.service
+- template: src=kube-proxy-config.yaml.j2 dest={{install_dir}}/kube-proxy/conf/kube-proxy-config.yaml
+
+- name: Generate the bootstrap.kubeconfig file
+  template: src=generate_kube-proxy_kubeconfig.sh.j2 dest={{install_dir}}/kube-proxy/conf/generate_kube-proxy_kubeconfig.sh mode=0777
+- shell: /bin/bash {{install_dir}}/kube-proxy/conf/generate_kube-proxy_kubeconfig.sh
+
+- name: Start the kube-proxy
+  service: daemon_reload=yes name=kube-proxy state=restarted enabled=yes

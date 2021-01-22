@@ -1,0 +1,14 @@
+[Unit]
+Description=Etcd Server
+After=network.target
+
+[Service]
+Type=notify
+Restart=always
+RestartSec=5s
+EnvironmentFile=-{{install_dir}}/etcd/conf/etcd.conf
+# set GOMAXPROCS to number of processors
+ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) {{install_dir}}/etcd/bin/etcd"
+
+[Install]
+WantedBy=multi-user.target

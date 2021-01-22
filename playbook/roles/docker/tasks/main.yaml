@@ -1,0 +1,30 @@
+---
+- name: create dir
+  file: path=/kubernetes/docker state=directory
+  ignore_errors: True
+
+- name: generate shell script
+  template: src=install_docker.sh.j2 dest={{install_dir}}/docker/install_docker.sh mode=0755
+
+- name: copy docker-ce rpm
+  copy: src={{item}} dest={{install_dir}}/docker
+  with_fileglob:
+    - docker-ce*.rpm
+
+- name: install docker
+  shell: /bin/bash {{install_dir}}/docker/install_docker.sh
+
+- name: start docker
+  service: name=docker state=started enabled=yes
+
+- name: update daemon.json
+  copy: src=daemon.json dest=/etc/docker
+
+- name: Import the pause:3.1
+  copy: src=roles/binary_package/pause.tar dest={{install_dir}}/docker
+- shell: docker load -i {{install_dir}}/docker/pause.tar
+
+- name: Import the flannel:v0.13.0
+  copy: src=roles/binary_package/flannel.tar dest={{install_dir}}/docker
+- shell: docker load -i {{install_dir}}/docker/flannel.tar
+

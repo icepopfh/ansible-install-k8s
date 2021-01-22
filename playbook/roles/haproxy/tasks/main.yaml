@@ -1,0 +1,8 @@
+- name: install haproxy
+  yum: name=haproxy state=present
+
+- name: Modify the configuration file
+  template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
+
+- name: Start the haproxy
+  service: daemon_reload=yes name=haproxy state=restarted enabled=yes

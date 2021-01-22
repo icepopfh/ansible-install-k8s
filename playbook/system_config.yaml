@@ -1,0 +1,51 @@
+---
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: new
+  roles:
+    - manage_config
+  tags: manage_config
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: new
+  roles:
+    - ssh_auth
+  tags: ssh_auth
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: new
+  roles:
+    - hostname
+  tags: hostname
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: new
+  roles:
+    - all_system_config
+  tags: all_system_config
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  roles:
+    - docker
+  tags: docker_install
+
+- hosts: master
+  remote_user: root
+  gather_facts: false
+  roles:
+    - k8s_command
+  tags: k8s_command

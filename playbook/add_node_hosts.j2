@@ -1,0 +1,4 @@
+[new_node]
+{% for item in add_server_group %}
+{{item.ip}} node_name={{item.name}}
+{% endfor %}

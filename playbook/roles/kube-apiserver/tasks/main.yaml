@@ -1,0 +1,33 @@
+- name: Create a directory
+  file: dest={{install_dir}}/kube-apiserver/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/kube-apiserver/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/kube-apiserver*.tar.gz
+
+- name: Copy the certificate
+  copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kube-apiserver/conf
+  with_items:
+    - etcd-ca.pem
+    - etcd.pem
+    - etcd-key.pem
+    - apiserver-ca.pem
+    - apiserver-ca-key.pem
+    - apiserver.pem
+    - apiserver-key.pem
+
+- name: Copy the token.csv
+  template: src=token.csv.j2 dest={{install_dir}}/kube-apiserver/conf/token.csv
+
+- name: Generate configuration files
+  template: src=kube-apiserver.conf.j2 dest={{install_dir}}/kube-apiserver/conf/kube-apiserver.conf
+- template: src=kube-apiserver.service.j2 dest=/usr/lib/systemd/system/kube-apiserver.service
+
+- name: Start the kube-apiserver
+  service: daemon_reload=yes name=kube-apiserver state=restarted enabled=yes
+

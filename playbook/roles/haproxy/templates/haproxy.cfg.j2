@@ -1,0 +1,51 @@
+global
+    log         127.0.0.1 local2
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000
+    user        haproxy
+    group       haproxy
+    daemon
+    # turn on stats unix socket
+    stats socket /var/lib/haproxy/stats
+
+defaults
+    mode                    tcp           # 修改默认为四层代理
+    log                     global
+    #option                  httplog
+    option                  dontlognull
+    option http-server-close
+    #option forwardfor       except 127.0.0.0/8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 3000
+
+listen status
+        bind 0.0.0.0:9188
+        mode http
+        stats enable
+        stats refresh 30s
+        stats uri /haproxy                     #设置haproxy监控地址为http://localhost:9188/haproxy
+        stats auth admin:123456              #添加用户名密码认证
+        stats realm welcome login\ haproxy
+        stats admin if TRUE
+
+frontend  main *:6445
+    acl url_static       path_beg       -i /static /images /javascript /stylesheets
+    acl url_static       path_end       -i .jpg .gif .png .css .js
+
+    default_backend             kube-apiserver
+
+backend kube-apiserver
+    mode        tcp             # 修改为tcp
+    balance     roundrobin
+    {% for host in groups['master'] %}
+        server {{ hostvars[host].node_name }} {{ hostvars[host].inventory_hostname }}:6443 check
+    {% endfor %}

@@ -1,0 +1,23 @@
+---
+- name: helm
+  unarchive: src={{item}} dest=/usr/local/bin mode=0777 copy=yes
+  with_fileglob:
+    - roles/binary_package/helm*.tar.gz
+- shell: echo "export KUBERNETES_MASTER=http://127.0.0.1:8080" >> /etc/profile
+- shell: source /etc/profile
+
+- name: kubectl
+  unarchive: src={{item}} dest=/usr/local/bin mode=0777 copy=yes
+  with_fileglob:
+    - roles/binary_package/kubectl*.tar.gz
+
+- name: kubeadm
+  unarchive: src={{item}} dest=/usr/local/bin mode=0777 copy=yes
+  with_fileglob:
+    - roles/binary_package/kubeadm*.tar.gz
+
+- name: cfssl
+  unarchive: src={{item}} dest=/usr/local/bin mode=0777 copy=yes
+  with_fileglob:
+    - roles/binary_package/cfssl*.tar.gz
+

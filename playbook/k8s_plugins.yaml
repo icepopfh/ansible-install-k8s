@@ -1,0 +1,71 @@
+---
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  roles:
+    - cfssl
+  tags: cfssl
+
+- hosts: etcd
+  remote_user: root
+  gather_facts: false
+  roles:
+    - etcd
+  tags: etcd
+
+- hosts: master
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kube-apiserver
+  tags: kube-apiserver
+
+- hosts: master
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kube-controller-manager
+  tags: kube-controller-manager
+
+- hosts: master
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kube-scheduler
+  tags: kube-scheduler
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kubelet
+  tags: kubelet
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kube-proxy
+  tags: kube-proxy
+
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  roles:
+    - flanneld
+  tags: flanneld
+
+- hosts: ha
+  remote_user: root
+  gather_facts: false
+  roles:
+    - haproxy
+  tags: haproxy
+
+- hosts: ha
+  remote_user: root
+  gather_facts: false
+  roles:
+    - keepalived
+  tags: keepalived

@@ -1,0 +1,8 @@
+- name: Generate the host SSH configuration file
+  template: src=config.j2 dest=roles/ssh_auth/files/config mode=0644
+
+- name: Generate the SSH script
+  template: src=ssh_auth.sh.j2 dest=roles/ssh_auth/files/ssh_auth.sh mode=0755
+
+- name: Execute the SSH script
+  shell: cd roles/ssh_auth/files && /bin/bash ssh_auth.sh

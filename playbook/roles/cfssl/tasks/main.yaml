@@ -1,0 +1,27 @@
+- name: Generate the ETCD certificate profile
+  template: src={{item}} dest=roles/cfssl/files/{{ item.split('.')[:-1]|join('.') }}
+  with_items:
+    - etcd-ca-config.json.j2
+    - etcd-ca-csr.json.j2
+    - etcd-csr.json.j2
+
+- name: Generate the ETCD certificate
+  shell: cd roles/cfssl/files && /bin/bash generate_etcd_cert.sh
+
+- name: Generate the kube-apiserver certificate profile
+  template: src={{item}} dest=roles/cfssl/files/{{ item.split('.')[:-1]|join('.') }}
+  with_items:
+    - apiserver-ca-config.json.j2
+    - apiserver-ca-csr.json.j2
+    - apiserver-csr.json.j2
+
+- name: Generate the kube-apiserver certificate
+  shell: cd roles/cfssl/files && /bin/bash generate_apiserver_cert.sh
+
+- name: Generate the kube-proxy certificate profile
+  template: src={{item}} dest=roles/cfssl/files/{{ item.split('.')[:-1]|join('.') }}
+  with_items:
+    - kube-proxy-csr.json.j2
+
+- name: Generate the kube-apiserver certificate
+  shell: cd roles/cfssl/files && /bin/bash generate_proxy_cert.sh

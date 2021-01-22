@@ -1,0 +1,16 @@
+- name: generate hostsfile
+  template: src=hosts_k8s.j2 dest=roles/manage_config/files/hosts_k8s
+  when: mode == "new"
+
+- name: change local hosts
+  shell: cat roles/manage_config/files/hosts_k8s >> /etc/hosts
+  when: mode == "new"
+
+- name: generate hostsfile new node
+  template: src=hosts_new_node.j2 dest=roles/manage_config/files/hosts_new_node
+  when: mode == "add_node"
+
+- name: change local hosts new node
+  shell: cat roles/manage_config/files/hosts_new_node >> /etc/hosts
+  when: mode == "add_node"
+

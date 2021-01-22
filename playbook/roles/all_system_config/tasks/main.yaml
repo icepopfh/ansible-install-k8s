@@ -1,0 +1,45 @@
+---
+- name: update /etc/hosts
+  copy: src=../manage_config/files/hosts_k8s dest=/etc/hosts_k8s
+  when: mode == "new"
+
+- name: update /etc/hosts
+  shell: cat /etc/hosts_k8s >> /etc/hosts
+  when: mode == "new"
+
+- name: update /etc/hosts
+  copy: src=../manage_config/files/hosts_new_node dest=/etc/hosts_new_node
+  when: mode == "add_node"
+
+- name: update /etc/hosts
+  shell: cat /etc/hosts_new_node >> /etc/hosts
+  when: mode == "add_node"
+
+- name: Turn off the firewalld
+  service: name=firewalld state=stopped enabled=no
+
+- name: Close the selinux
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: "^SELINUX="
+    line: "SELINUX=disabled"
+
+- name: Close swap space
+  shell: swapoff -a
+- lineinfile:
+    path: /etc/fstab
+    regexp: ".*swap"
+    line: ""
+
+- name: create /etc/sysctl.d/kubernetes.conf
+  copy: src=kubernetes.conf dest=/etc/sysctl.d
+- shell: sysctl --system
+
+- name: time sync
+  file: path=/etc/ntp state=directory mode=0755
+- copy: src=install_ntpdate.sh dest=/etc/ntp/install_ntpdate.sh mode=0777
+- shell: echo "0 * * * * /usr/sbin/ntpdate {{ntp_server}} >> /etc/ntp/update.log" > /etc/ntp/ntpdate.crontab && \
+          crontab /etc/ntp/ntpdate.crontab
+
+- copy: src=reboot.sh dest=/etc mode=0700
+

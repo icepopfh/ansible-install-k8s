@@ -1,0 +1,4 @@
+FLANNEL_OPTIONS="--etcd-endpoints={% for host in groups['etcd'] %}https://{{ hostvars[host].inventory_hostname }}:2379{% if not loop.last %},{% endif %}{% endfor %} \
+-etcd-cafile={{install_dir}}/flannel/conf/etcd-ca.pem \
+-etcd-certfile={{install_dir}}/flannel/conf/etcd.pem \
+-etcd-keyfile={{install_dir}}/flannel/conf/etcd-key.pem"

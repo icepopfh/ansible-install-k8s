@@ -1,0 +1,14 @@
+[Unit]
+Description=Flanneld overlay address etcd agent
+After=network-online.target network.target
+Before=docker.service
+
+[Service]
+Type=notify
+EnvironmentFile={{install_dir}}/flannel/conf/flannel.conf
+ExecStart={{install_dir}}/flannel/bin/flanneld --ip-masq $FLANNEL_OPTIONS
+ExecStartPost={{install_dir}}/flannel/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/subnet.env
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

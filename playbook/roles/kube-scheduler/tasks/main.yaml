@@ -1,0 +1,20 @@
+- name: Create a directory
+  file: dest={{install_dir}}/kube-scheduler/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/kube-scheduler/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/kube-scheduler*.tar.gz
+
+- name: Generate configuration files
+  template: src=kube-scheduler.conf.j2 dest={{install_dir}}/kube-scheduler/conf/kube-scheduler.conf
+- template: src=kube-scheduler.service.j2 dest=/usr/lib/systemd/system/kube-scheduler.service
+
+- name: Start the kube-scheduler
+  service: daemon_reload=yes name=kube-scheduler state=restarted enabled=yes
+
+

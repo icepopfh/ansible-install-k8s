@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+mv config $HOME/.ssh/
+{% for item in server_group %}
+sshpass -p '{{server_passwd}}' ssh-copy-id {{server_user}}@{{item.ip}}
+{% endfor %}

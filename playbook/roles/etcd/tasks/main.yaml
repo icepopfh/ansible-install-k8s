@@ -1,0 +1,28 @@
+- name: Create a directory
+  file: dest={{install_dir}}/etcd/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+    - data
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/etcd/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/etcd*.tar.gz
+
+- name: Copy the certificate
+  copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/etcd/conf
+  with_items:
+  - etcd-ca.pem
+  - etcd-ca-key.pem
+  - etcd.pem
+  - etcd-key.pem
+
+- name: Generate configuration files
+  template: src=etcd.conf.j2 dest={{install_dir}}/etcd/conf/etcd.conf
+- template: src=etcd.service.j2 dest=/usr/lib/systemd/system/etcd.service
+
+- name: Start the etcd
+  service: daemon_reload=yes name=etcd state=restarted  enabled=yes
+

@@ -1,0 +1,13 @@
+---
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: generate k8s hosts
+      template: src=ansible_hosts.j2 dest=../k8s_hosts
+      when: mode == "new"
+
+    - name: generate add node hosts
+      template: src=add_node_hosts.j2 dest=../add_node_hosts
+      when: mode == "add_node"

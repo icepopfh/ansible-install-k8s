@@ -1,0 +1,13 @@
+---
+{% for item in add_server_group %}
+- hosts: {{item.name}}
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='{{item.name}}'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines
+{% endfor %}

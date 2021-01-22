@@ -1,0 +1,14 @@
+KUBE_CONTROLLER_MANAGER_OPTS="--logtostderr=false \
+--v=2 \
+--log-dir={{install_dir}}/kube-controller-manager/logs \
+--leader-elect=true \
+--master=127.0.0.1:8080 \
+--bind-address=127.0.0.1 \
+--allocate-node-cidrs=true \
+--cluster-cidr=10.1.0.0/16 \
+--service-cluster-ip-range=10.2.0.0/16 \
+--cluster-signing-cert-file={{install_dir}}/kube-apiserver/conf/apiserver-ca.pem \
+--cluster-signing-key-file={{install_dir}}/kube-apiserver/conf/apiserver-ca-key.pem  \
+--root-ca-file={{install_dir}}/kube-apiserver/conf/apiserver-ca.pem \
+--service-account-private-key-file={{install_dir}}/kube-apiserver/conf/apiserver-ca-key.pem \
+--experimental-cluster-signing-duration=87600h0m0s"

@@ -1,0 +1,7 @@
+- name: Execute new cluster yaml
+  include_tasks: new_cluster.yaml
+  when: mode == "new"
+
+- name: Execute add node yaml
+  include_tasks: add_node.yaml
+  when: mode == "add_node"

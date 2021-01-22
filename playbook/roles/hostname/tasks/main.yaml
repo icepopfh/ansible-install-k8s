@@ -1,0 +1,15 @@
+- name: Generate a YAML file to configure the hostname
+  template: src=hostname.yaml.j2 dest=roles/hostname/files/hostname.yaml
+  when: mode == "new"
+
+- name: execute playbook
+  shell: ansible-playbook roles/hostname/files/hostname.yaml
+  when: mode == "new"
+
+- name: Generate a YAML file to configure the hostname new node
+  template: src=add_node_hostname.yaml.j2 dest=roles/hostname/files/add_node_hostname.yaml
+  when: mode == "add_node"
+
+- name: execute playbook new node
+  shell: ansible-playbook roles/hostname/files/add_node_hostname.yaml
+  when: mode == "add_node"

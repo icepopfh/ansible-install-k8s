@@ -1,0 +1,27 @@
+- name: Create a directory
+  file: dest={{install_dir}}/kube-controller-manager/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/kube-controller-manager/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/kube-controller-manager*.tar.gz
+
+- name: Generate configuration files
+  template: src=kube-controller-manager.conf.j2 dest={{install_dir}}/kube-controller-manager/conf/kube-controller-manager.conf
+- template: src=kube-controller-manager.service.j2 dest=/usr/lib/systemd/system/kube-controller-manager.service
+
+- name: Start the kube-controller-manager
+  service: daemon_reload=yes name=kube-controller-manager state=restarted enabled=yes
+
+- name: Authorize kubelet-bootstrap users
+  shell: kubectl create clusterrolebinding icepopfh-kubelet-bootstrap \
+    --clusterrole=system:node-bootstrapper \
+    --user=icepopfh-kubelet-bootstrap
+  run_once: true
+
+
+

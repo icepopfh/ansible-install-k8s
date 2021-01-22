@@ -1,0 +1,24 @@
+{% set num = SSL_hosts.etcd | length %}
+{
+  "CN": "etcd",
+  "hosts": [
+  {% for ip in SSL_hosts.etcd %}
+    {% if num == loop.index %}
+        "{{ip}}"
+    {% else %}
+        "{{ip}}",
+    {% endif %}
+  {% endfor %}
+ ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+ },
+  "names": [
+   {
+      "C": "CN",
+      "L": "BeiJing",
+      "ST": "BeiJing"
+   }
+ ]
+}

@@ -1,0 +1,78 @@
+---
+
+server_user: root
+server_passwd: ""
+ssh_port: 22
+install_dir: "/kubernetes"
+token: "827c8abd238e6ac6131ff9c75799df79"
+
+ntp_server: 192.168.15.92
+vip: 192.168.15.140
+network_card: "ens160"
+
+master_server:
+  - name: k8s-master1
+    ip: 192.168.15.134
+  - name: k8s-master2
+    ip: 192.168.15.135
+  - name: k8s-master3
+    ip: 192.168.15.136
+
+node_server:
+  - name: k8s-node1
+    ip: 192.168.15.137
+
+etcd_server:
+  - name: etcd1
+    ip: 192.168.15.134
+  - name: etcd2
+    ip: 192.168.15.135
+  - name: etcd3
+    ip: 192.168.15.136
+
+ha_server:
+  - name: k8s-master1
+    ip: 192.168.15.134
+    state: MASTER
+    priority: 200
+  - name: k8s-master2
+    ip: 192.168.15.135
+    state: BACKUP
+    priority: 180
+  - name: k8s-master3
+    ip: 192.168.15.136
+    state: BACKUP
+    priority: 160
+
+server_group:
+  - name: k8s-master1
+    ip: 192.168.15.134
+  - name: k8s-master2
+    ip: 192.168.15.135
+  - name: k8s-master3
+    ip: 192.168.15.136
+  - name: k8s-node1
+    ip: 192.168.15.137
+
+add_server_group:
+  - name: k8s-node2
+    ip: 192.168.15.138
+  - name: k8s-node3
+    ip: 192.168.15.139
+
+SSL_hosts:
+  k8s:
+    - 192.168.15.134
+    - 192.168.15.135
+    - 192.168.15.136
+    - 192.168.15.137
+    - 192.168.15.138
+    - 192.168.15.139
+    - 192.168.15.140
+  etcd:
+    - 192.168.15.134
+    - 192.168.15.135
+    - 192.168.15.136
+    - 192.168.15.137
+    - 192.168.15.138
+    - 192.168.15.139

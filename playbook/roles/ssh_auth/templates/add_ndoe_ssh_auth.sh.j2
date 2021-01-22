@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cat add_node_config >> $HOME/.ssh/config
+{% for item in add_server_group %}
+sshpass -p '{{server_passwd}}' ssh-copy-id {{server_user}}@{{item.ip}}
+{% endfor %}

@@ -1,0 +1,13 @@
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: reboot all hosts
+    shell: /bin/bash /etc/reboot.sh
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: restart
+    shell: shutdown -r now

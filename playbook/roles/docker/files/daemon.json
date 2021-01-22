@@ -1,0 +1,6 @@
+{
+"registry-mirrors":["https://hub-mirror.c.163.com/"],
+"insecure-registries": ["192.168.15.124"],
+"log-driver":"json-file",
+"log-opts": {"max-size":"300m", "max-file":"1"}
+}

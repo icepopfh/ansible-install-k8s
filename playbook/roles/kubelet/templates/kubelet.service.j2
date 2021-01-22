@@ -1,0 +1,10 @@
+[Unit]
+Description=Kubernetes Kubelet
+After=docker.service
+[Service]
+EnvironmentFile={{install_dir}}/kubelet/conf/kubelet.conf
+ExecStart={{install_dir}}/kubelet/bin/kubelet $KUBELET_OPTS
+Restart=on-failure
+LimitNOFILE=65536
+[Install]
+WantedBy=multi-user.target

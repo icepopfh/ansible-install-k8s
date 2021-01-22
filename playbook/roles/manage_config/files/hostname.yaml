@@ -1,0 +1,61 @@
+---
+- hosts: k8s-master1
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='k8s-master1'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines
+- hosts: k8s-master2
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='k8s-master2'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines
+- hosts: k8s-master3
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='k8s-master3'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines
+- hosts: k8s-node1
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='k8s-node1'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines
+- hosts: k8s-node2
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='k8s-node2'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines
+- hosts: k8s-node3
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: update hostname
+    hostname: name='k8s-node3'
+  - name: show hostname
+    shell: hostname
+    register: host_name
+  - debug: var=host_name.stdout_lines

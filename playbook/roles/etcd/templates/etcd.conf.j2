@@ -1,0 +1,21 @@
+{% set local_ip = inventory_hostname %}
+#[member]
+ETCD_NAME="{{etcd_name}}"
+ETCD_DATA_DIR="{{install_dir}}/etcd/data"
+ETCD_LISTEN_PEER_URLS="https://{{local_ip}}:2380"
+ETCD_LISTEN_CLIENT_URLS="https://{{local_ip}}:2379"
+#[cluster]
+ETCD_INITIAL_ADVERTISE_PEER_URLS="https://{{local_ip}}:2380"
+ETCD_INITIAL_CLUSTER="{% for host in groups['etcd'] %}{{ hostvars[host].etcd_name }}=https://{{ hostvars[host].inventory_hostname }}:2380{% if not loop.last %},{% endif %}{% endfor %}"
+ETCD_INITIAL_CLUSTER_STATE="new"
+ETCD_INITIAL_CLUSTER_TOKEN="k8s-etcd-cluster"
+ETCD_ADVERTISE_CLIENT_URLS="https://{{local_ip}}:2379"
+#[security]
+CLIENT_CERT_AUTH="true"
+ETCD_CA_FILE="{{install_dir}}/etcd/conf/etcd-ca.pem"
+ETCD_CERT_FILE="{{install_dir}}/etcd/conf/etcd.pem"
+ETCD_KEY_FILE="{{install_dir}}/etcd/conf/etcd-key.pem"
+PEER_CLIENT_CERT_AUTH="true"
+ETCD_PEER_CA_FILE="{{install_dir}}/etcd/conf/etcd-ca.pem"
+ETCD_PEER_CERT_FILE="{{install_dir}}/etcd/conf/etcd.pem"
+ETCD_PEER_KEY_FILE="{{install_dir}}/etcd/conf/etcd-key.pem"

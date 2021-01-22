@@ -1,0 +1,26 @@
+- name: Create a directory
+  file: dest={{install_dir}}/flannel/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/flannel/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/flannel*.tar.gz
+
+- name: Copy the certificate
+  copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/flannel/conf
+  with_items:
+  - etcd-ca.pem
+  - etcd.pem
+  - etcd-key.pem
+
+- name: Generate configuration files
+  template: src=flannel.conf.j2 dest={{install_dir}}/flannel/conf/flannel.conf
+- template: src=flanneld.service.j2 dest=/usr/lib/systemd/system/flanneld.service
+
+- name: Create the corresponding network
+  template: src=create_network.sh.j2 dest={{install_dir}}/flannel/conf/create_network.sh mode=0777
+- shell: /bin/bash {{install_dir}}/flannel/conf/create_network.sh

@@ -1,0 +1,9 @@
+KUBELET_OPTS="--logtostderr=false \
+--v=2 \
+--log-dir={{install_dir}}/kubelet/logs \
+--hostname-override={{node_name}} \
+--kubeconfig={{install_dir}}/kubelet/conf/kubelet.kubeconfig \
+--bootstrap-kubeconfig={{install_dir}}/kubelet/conf/bootstrap.kubeconfig \
+--config={{install_dir}}/kubelet/conf/kubelet-config.yaml \
+--cert-dir={{install_dir}}/kubelet/cert \
+--pod-infra-container-image=mirrorgooglecontainers/pause-amd64:3.1"

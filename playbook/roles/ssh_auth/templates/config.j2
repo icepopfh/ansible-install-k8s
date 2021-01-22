@@ -1,0 +1,8 @@
+StrictHostKeyChecking no
+UserKnownHostsFile /dev/null
+
+{% for item in server_group %}
+Host {{item.name}}
+        User {{server_user}}
+        Port {{ssh_port}}
+{% endfor %}

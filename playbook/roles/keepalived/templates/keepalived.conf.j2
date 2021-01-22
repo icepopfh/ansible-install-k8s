@@ -1,0 +1,26 @@
+! Configuration File for keepalived
+
+vrrp_script check_haproxy {
+        script "/etc/keepalived/check_haproxy.sh"
+        interval 3
+        weight -20
+}
+
+vrrp_instance K8S {
+    state {{state}}
+    interface {{network_card}}
+    virtual_router_id 88
+    priority {{priority}}
+    advert_int 5
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    virtual_ipaddress {
+        {{vip}}
+     }
+    track_script {
+        check_haproxy
+   }
+
+}

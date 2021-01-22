@@ -1,0 +1,58 @@
+---
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: add_node
+  roles:
+    - manage_config
+  tags: manage_config
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: add_node
+  roles:
+    - ssh_auth
+  tags: ssh_auth
+
+- hosts: localhost
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: add_node
+  roles:
+    - hostname
+  tags: hostname
+
+- hosts: new_node
+  remote_user: root
+  gather_facts: false
+  vars:
+    - mode: add_node
+  roles:
+    - all_system_config
+  tags: all_system_config
+
+- hosts: new_node
+  remote_user: root
+  gather_facts: false
+  roles:
+    - docker
+  tags: docker_install
+
+- hosts: new_node
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kubelet
+  tags: kubelet
+
+- hosts: new_node
+  remote_user: root
+  gather_facts: false
+  roles:
+    - kube-proxy
+  tags: kube-proxy

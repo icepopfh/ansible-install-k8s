@@ -1,0 +1,9 @@
+- name: install keepalived
+  yum: name=keepalived state=present
+
+- name: Modify the configuration file
+  template: src=check_haproxy.sh.j2 dest=/etc/keepalived/check_haproxy.sh mode=0777
+- template: src=keepalived.conf.j2 dest=/etc/keepalived/keepalived.conf
+
+- name: start the keepalived
+  service: daemon_reload=yes name=keepalived state=restarted enabled=yes

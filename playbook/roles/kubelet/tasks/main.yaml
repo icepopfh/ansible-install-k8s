@@ -1,0 +1,29 @@
+- name: Create a directory
+  file: dest={{install_dir}}/kubelet/{{item}} state=directory
+  with_items:
+    - logs
+    - bin
+    - conf
+    - cert
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/kubelet/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/kubelet*.tar.gz
+
+- name: Copy the certificate
+  copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kubelet/conf
+  with_items:
+  - apiserver-ca.pem
+
+- name: Generate configuration files
+  template: src=kubelet.conf.j2 dest={{install_dir}}/kubelet/conf/kubelet.conf
+- template: src=kubelet.service.j2 dest=/usr/lib/systemd/system/kubelet.service
+- template: src=kubelet-config.yaml.j2 dest={{install_dir}}/kubelet/conf/kubelet-config.yaml
+
+- name: Generate the bootstrap.kubeconfig file
+  template: src=generate_bootstrap_kubeconfig.sh.j2 dest={{install_dir}}/kubelet/conf/generate_bootstrap_kubeconfig.sh mode=0777
+- shell: /bin/bash {{install_dir}}/kubelet/conf/generate_bootstrap_kubeconfig.sh
+
+- name: Start the kubelet
+  service: daemon_reload=yes name=kubelet state=restarted enabled=yes

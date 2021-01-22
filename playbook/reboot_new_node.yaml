@@ -1,0 +1,7 @@
+- hosts: new_node
+  remote_user: root
+  gather_facts: false
+  tasks:
+  - name: reboot all hosts
+    shell: /bin/bash /etc/reboot.sh
+
