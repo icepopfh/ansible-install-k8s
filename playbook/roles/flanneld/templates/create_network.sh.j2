@@ -3,7 +3,7 @@
 etcdctl --ca-file={{install_dir}}/flannel/conf/etcd-ca.pem --cert-file={{install_dir}}/flannel/conf/etcd.pem \
         --key-file={{install_dir}}/flannel/conf/etcd-key.pem \
         --endpoints="{% for host in groups['etcd'] %}https://{{ hostvars[host].inventory_hostname }}:2379{% if not loop.last %},{% endif %}{% endfor %}" \
-        set /coreos.com/network/config '{ "Network": "172.100.0.0/16", "Backend": {"Type": "vxlan"}}'
+        set /coreos.com/network/config '{ "Network": "10.1.0.0/16", "Backend": {"Type": "vxlan"}}'
 
 etcdctl --ca-file={{install_dir}}/flannel/conf/etcd-ca.pem --cert-file={{install_dir}}/flannel/conf/etcd.pem \
         --key-file={{install_dir}}/flannel/conf/etcd-key.pem \

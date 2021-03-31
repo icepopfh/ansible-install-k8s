@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#author:icepopfh
-#date:2021-01-18
+# author:icepopfh
+# date:2021-01-18
 
 set -e
 

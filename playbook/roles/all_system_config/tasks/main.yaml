@@ -41,5 +41,10 @@
 - shell: echo "0 * * * * /usr/sbin/ntpdate {{ntp_server}} >> /etc/ntp/update.log" > /etc/ntp/ntpdate.crontab && \
           crontab /etc/ntp/ntpdate.crontab
 
+- name: install nfs rpcbind
+  yum: name=nfs-utils,rpcbind state=installed
+- service: name=nfs state=restarted  enabled=yes
+- service: name=rpcbind state=restarted  enabled=yes
+
 - copy: src=reboot.sh dest=/etc mode=0700
 

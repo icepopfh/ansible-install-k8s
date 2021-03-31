@@ -1,3 +1,6 @@
+- name: Create yaml directory
+  file: dest={{install_dir}}/yaml state=directory
+
 - name: Create a directory
   file: dest={{install_dir}}/kube-apiserver/{{item}} state=directory
   with_items:

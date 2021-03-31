@@ -12,7 +12,7 @@ KUBE_APISERVER_OPTS="--logtostderr=false \
 --authorization-mode=RBAC,Node \
 --enable-bootstrap-token-auth=true \
 --token-auth-file={{install_dir}}/kube-apiserver/conf/token.csv \
---service-node-port-range=10000-40000 \
+--service-node-port-range=1024-65535 \
 --kubelet-client-certificate={{install_dir}}/kube-apiserver/conf/apiserver.pem \
 --kubelet-client-key={{install_dir}}/kube-apiserver/conf/apiserver-key.pem \
 --tls-cert-file={{install_dir}}/kube-apiserver/conf/apiserver.pem \

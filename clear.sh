@@ -3,10 +3,8 @@
 
 echo -e "remove docker?"
 read option
-if [ $option == "n" ];then
-  pass
-elif [ $option == "y" ]; then
-  ansible all -m shell -a "yum remove docker-ce -y && rpm -e docker-ce-cli-20.10.2-3.el7.x86_64"
+if [ "$option" == "y" ] || [ "$option" == "Y" ] || [ "$option" == "" ]; then
+  ansible all -m shell -a "systemctl stop docker && yum remove docker-ce -y && rpm -e docker-ce-cli-20.10.2-3.el7.x86_64"
 fi
 
 ansible all -m shell -a "systemctl stop kube-apiserver kube-controller-manager kube-scheduler kubelet kube-proxy flanneld etcd"

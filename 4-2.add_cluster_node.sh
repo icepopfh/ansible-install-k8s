@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#author:icepopfh
-#date:2021-01-22
+# author:icepopfh
+# date:2021-01-22
 
 set -e
 base_path=`pwd`

@@ -21,6 +21,10 @@ master_server:
 node_server:
   - name: k8s-node1
     ip: 192.168.15.137
+  - name: k8s-node2
+    ip: 192.168.15.138
+  - name: k8s-node3
+    ip: 192.168.15.139
 
 etcd_server:
   - name: etcd1
@@ -53,12 +57,13 @@ server_group:
     ip: 192.168.15.136
   - name: k8s-node1
     ip: 192.168.15.137
-
-add_server_group:
   - name: k8s-node2
     ip: 192.168.15.138
   - name: k8s-node3
     ip: 192.168.15.139
+
+add_server_group:
+
 
 SSL_hosts:
   k8s:

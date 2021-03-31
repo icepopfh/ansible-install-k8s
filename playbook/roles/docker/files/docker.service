@@ -12,7 +12,8 @@ Type=notify
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
 EnvironmentFile=/run/flannel/subnet.env
-ExecStart=/usr/bin/dockerd  --bip=${FLANNEL_SUBNET} --ip-masq=${FLANNEL_IPMASQ} --mtu=${FLANNEL_MTU}
+#ExecStart=/usr/bin/dockerd  --bip=${FLANNEL_SUBNET} --ip-masq=${FLANNEL_IPMASQ} --mtu=${FLANNEL_MTU}
+ExecStart=/usr/bin/dockerd  $DOCKER_NETWORK_OPTIONS
 ExecReload=/bin/kill -s HUP $MAINPID
 TimeoutSec=0
 RestartSec=2
