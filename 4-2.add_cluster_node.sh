@@ -3,7 +3,7 @@
 # date:2021-01-22
 
 set -e
-base_path=`pwd`
+base_path=$(pwd)
 
 # 配置docker和flannel网络
 echo -e "Configure the flannel"

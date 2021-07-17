@@ -1,0 +1,76 @@
+- hosts: k8s-master
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: Copy etcd certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/etcd/conf
+      with_items:
+      - etcd-ca.pem
+      - etcd-ca-key.pem
+      - etcd.pem
+      - etcd-key.pem
+
+    - name: Copy kube-apiserver certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kube-apiserver/conf
+      with_items:
+        - etcd-ca.pem
+        - etcd.pem
+        - etcd-key.pem
+        - apiserver-ca.pem
+        - apiserver-ca-key.pem
+        - apiserver.pem
+        - apiserver-key.pem
+
+    - name: Copy kube-proxy certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kube-proxy/conf
+      with_items:
+      - apiserver-ca.pem
+      - kube-proxy.pem
+      - kube-proxy-key.pem
+
+    - name: Copy kubelet certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kubelet/conf
+      with_items:
+      - apiserver-ca.pem
+
+    - name: Copy flanneld certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/flannel/conf
+      with_items:
+        - etcd-ca.pem
+        - etcd.pem
+        - etcd-key.pem
+
+    - name: Generate the bootstrap.kubeconfig file
+      shell: /bin/bash {{install_dir}}/kubelet/conf/generate_bootstrap_kubeconfig.sh
+
+    - name: Generate the bootstrap.kubeconfig file
+      shell: /bin/bash {{install_dir}}/kube-proxy/conf/generate_kube-proxy_kubeconfig.sh
+
+- hosts: k8s-node
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: Copy kube-proxy certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kube-proxy/conf
+      with_items:
+        - apiserver-ca.pem
+        - kube-proxy.pem
+        - kube-proxy-key.pem
+
+    - name: Copy kubelet certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/kubelet/conf
+      with_items:
+        - apiserver-ca.pem
+
+    - name: Copy flanneld certificate
+      copy: src=roles/cfssl/files/{{item}} dest={{install_dir}}/flannel/conf
+      with_items:
+        - etcd-ca.pem
+        - etcd.pem
+        - etcd-key.pem
+
+    - name: Generate the bootstrap.kubeconfig file
+      shell: /bin/bash {{install_dir}}/kubelet/conf/generate_bootstrap_kubeconfig.sh
+
+    - name: Generate the bootstrap.kubeconfig file
+      shell: /bin/bash {{install_dir}}/kube-proxy/conf/generate_kube-proxy_kubeconfig.sh

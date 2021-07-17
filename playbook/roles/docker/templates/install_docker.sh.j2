@@ -3,16 +3,16 @@
 if command -v docker > /dev/null 2>&1;then
     echo "docker is already installed."
 else
-#    code=`curl -I -s --connect-timeout 2 www.baidu.com -w %{http_code} | tail -n1`
-#    if [ $code == "200" ];then
-#        yum install -y yum-utils device-mapper-persistent-data lvm2 && \
-#        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo  && \
-#        yum install docker-ce -y
-#        docker --version
-#    else
-#        echo "Online installation of docker fails,please ensure the network is smooth."
-#    fi
-    cd {{install_dir}}/docker
-    rpm -ivh --force *.rpm
+    code=$(curl -I -s --connect-timeout 2 www.baidu.com -w %{http_code} | tail -n1)
+    if [ $code == "200" ];then
+        yum install -y yum-utils device-mapper-persistent-data lvm2 && \
+        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo  && \
+        yum install docker-ce -y
+        docker --version
+    else
+        echo "Online installation of docker fails,please ensure the network is smooth."
+    fi
+#    cd {{install_dir}}/docker
+#    rpm -ivh --force *.rpm
 fi
 

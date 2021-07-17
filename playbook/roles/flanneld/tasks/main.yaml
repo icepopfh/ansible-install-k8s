@@ -5,6 +5,16 @@
     - bin
     - conf
 
+- name: Create etcd directory
+  file: dest={{install_dir}}/etcd/{{item}} state=directory
+  with_items:
+    - bin
+
+- name: Unzip the binaries
+  unarchive: src={{item}} dest={{install_dir}}/etcd/bin mode=0777
+  with_fileglob:
+    - roles/binary_package/etcd*.tar.gz
+
 - name: Unzip the binaries
   unarchive: src={{item}} dest={{install_dir}}/flannel/bin mode=0777
   with_fileglob:

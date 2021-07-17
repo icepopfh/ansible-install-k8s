@@ -4,8 +4,8 @@
 
 set -e
 
-base_path=`pwd`
-token=`head -c 16 /dev/urandom | od -An -t x | tr -d ' '`
+base_path=$(pwd)
+token=$(head -c 16 /dev/urandom | od -An -t x | tr -d ' ')
 sed -i "s#.*token.*#token: \"$token\"#g" playbook/group_vars/all.yaml
 
 echo -e "################################### \033[41m generate certificate \033[0m ####################################"

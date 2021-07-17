@@ -23,6 +23,8 @@
     - apiserver-ca-key.pem
     - apiserver.pem
     - apiserver-key.pem
+    - metrics-proxy-key.pem
+    - metrics-proxy.pem
 
 - name: Copy the token.csv
   template: src=token.csv.j2 dest={{install_dir}}/kube-apiserver/conf/token.csv

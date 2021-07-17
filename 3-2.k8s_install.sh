@@ -4,7 +4,7 @@
 
 set -e
 
-base_path=`pwd`
+base_path=$(pwd)
 
 echo -e "配置网络！"
 ansible all -m copy -a "src=${base_path}/playbook/roles/docker/files/docker.service dest=/usr/lib/systemd/system" -i k8s_hosts

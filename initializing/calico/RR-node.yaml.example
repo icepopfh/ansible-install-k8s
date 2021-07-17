@@ -1,0 +1,24 @@
+apiVersion: projectcalico.org/v3
+kind: Node
+metadata:
+  annotations:
+    projectcalico.org/kube-labels: '{"beta.kubernetes.io/arch":"amd64","beta.kubernetes.io/os":"linux","kubernetes.io/arch":"amd64","kubernetes.io/hostname":"k8s-master1","kubernetes.io/os":"linux","network-calico-RR":"true"}'
+  creationTimestamp: "2021-06-23T01:08:49Z"
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: k8s-master1
+    kubernetes.io/os: linux
+    network-calico-RR: "true"
+  name: k8s-master1
+  resourceVersion: "7338768"
+  uid: 69c0729f-538d-4544-b8ce-6e57cbbafa1b
+spec:
+  bgp:
+    ipv4Address: 192.168.15.134/24
+    routeReflectorClusterID: 3.3.3.3
+  orchRefs:
+  - nodeName: k8s-master1
+    orchestrator: k8s
+status: {}

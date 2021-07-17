@@ -22,6 +22,13 @@ KUBE_APISERVER_OPTS="--logtostderr=false \
 --etcd-cafile={{install_dir}}/kube-apiserver/conf/etcd-ca.pem \
 --etcd-certfile={{install_dir}}/kube-apiserver/conf/etcd.pem \
 --etcd-keyfile={{install_dir}}/kube-apiserver/conf/etcd-key.pem \
+--requestheader-client-ca-file=/kubernetes/kube-apiserver/conf/apiserver-ca.pem \
+--requestheader-allowed-names="" \
+--requestheader-extra-headers-prefix=X-Remote-Extra- \
+--requestheader-group-headers=X-Remote-Group \
+--requestheader-username-headers=X-Remote-User \
+--proxy-client-cert-file=/kubernetes/kube-apiserver/conf/metrics-proxy.pem \
+--proxy-client-key-file=/kubernetes/kube-apiserver/conf/metrics-proxy-key.pem \
 --audit-log-maxage=30 \
 --audit-log-maxbackup=3 \
 --audit-log-maxsize=100 \
