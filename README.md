@@ -31,7 +31,10 @@ k8s_install.sh部署k8s集群(二进制部署)
 
 增加node节点
 -------------
-1. 4-1.add_cluster_node.sh安装部署新的k8s-node
-2. 4-2.add_cluster_node.sh配置新node的flannel网络（在新节点的flannel进入running状态后再执行）
+(1) 4-1.add_cluster_node.sh安装部署新的k8s-node
+(2) 4-2.add_cluster_node.sh配置新node的flannel网络（在新节点的flannel进入running状态后再执行）
 
+更新自签名证书
+-------------
+(1) 5.replace_certificate.sh更新自签名证书
 
