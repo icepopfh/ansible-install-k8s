@@ -1,7 +1,7 @@
 #自动部署kubernetes集群
 
 ###前期准备
-请把ansible的all.yaml变量文件按要求写好！！！
+请把ansible的playbook/group_vars/all.yaml变量文件按要求写好！！！
 
 manage_config.sh初始化ansible管理机配置
 ---------------------------------------
