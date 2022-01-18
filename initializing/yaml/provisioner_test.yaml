@@ -1,0 +1,47 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-k8s-logs-storageclass-test
+provisioner: nfs-k8s-logs-test
+reclaimPolicy: Retain
+parameters:
+  archiveOnDelete: "true"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-k8s-logs-provisioner-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfs-k8s-logs-storageclass-test
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nfs-k8s-logs-storageclass-test
+    spec:
+      serviceAccountName: k8s-logs
+      containers:
+      - name: nfs-k8s-logs-prosioner
+        image: registry.cn-hangzhou.aliyuncs.com/rookieops/nfs-client-provisioner:v0.1
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: nfs-k8s-logs-test
+          mountPath: /persistentvolumes      #默认的
+        env:
+        - name: PROVISIONER_NAME
+          value: nfs-k8s-logs-test           #provisioner名称
+        - name: NFS_SERVER
+          value: 192.168.15.115              #nfs服务器
+        - name: NFS_PATH
+          value: /data/logs/test             #nfs服务器的挂载路径
+      volumes:
+      - name: nfs-k8s-logs-test
+        nfs:
+          server: 192.168.15.115             #nfs服务器
+          path: /data/logs/test              #nfs服务器的挂载路径

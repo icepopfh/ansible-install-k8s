@@ -1,0 +1,65 @@
+# 创建namespace
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: clinical-api
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: clinical-web
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: non-clinical-api
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: non-clinical-web
+
+#创建namespace的harbor密钥
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSIxOTIuMTY4LjE1LjEyNCI6IHsKCQkJImF1dGgiOiAiWVdSdGFXNDZjM3A2YzIxM01USXoiCgkJfQoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0=
+kind: Secret
+metadata:
+  name: harbor-secret
+  namespace: clinical-api
+type: kubernetes.io/dockerconfigjson
+
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSIxOTIuMTY4LjE1LjEyNCI6IHsKCQkJImF1dGgiOiAiWVdSdGFXNDZjM3A2YzIxM01USXoiCgkJfQoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0=
+kind: Secret
+metadata:
+  name: harbor-secret
+  namespace: clinical-web
+type: kubernetes.io/dockerconfigjson
+
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSIxOTIuMTY4LjE1LjEyNCI6IHsKCQkJImF1dGgiOiAiWVdSdGFXNDZjM3A2YzIxM01USXoiCgkJfQoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0=
+kind: Secret
+metadata:
+  name: harbor-secret
+  namespace: non-clinical-api
+type: kubernetes.io/dockerconfigjson
+
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSIxOTIuMTY4LjE1LjEyNCI6IHsKCQkJImF1dGgiOiAiWVdSdGFXNDZjM3A2YzIxM01USXoiCgkJfQoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0=
+kind: Secret
+metadata:
+  name: harbor-secret
+  namespace: non-clinical-web
+type: kubernetes.io/dockerconfigjson
